@@ -1,10 +1,14 @@
 .test{
-    width: 1000px;
-    height:100px;
+    width: 1500px;
+    height: 800px;
     background-image: url(./2.jpg);
-    background-size: cover;
+    background-size: 100% auto; /* 调整图片的宽度 */
     background-position: center;
     background-repeat: no-repeat;
     margin: 0;
     height: 100vh;
+}
+
+.move-up {
+    margin-top: -50px; /* 向上移动20px，可以根据需要调整 */
 }
