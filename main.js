@@ -40,12 +40,6 @@ Ball.prototype.draw = function () {
   ctx.fill();
 };
 
-let testBall = new Ball(50, 100, 4, 4, "blue", 10);
-
-testBall.x;
-testBall.size;
-testBall.color;
-testBall.draw();
 
 Ball.prototype.update = function () {
   if (this.x + this.size >= width) {
@@ -70,8 +64,8 @@ Ball.prototype.update = function () {
 
 let balls = [];
 
-while (balls.length < 25) {
-  let size = random(10, 20);
+while (balls.length < 50) {
+  let size = random(15, 30);
   let ball = new Ball(
     // 为避免绘制错误，球至少离画布边缘球本身一倍宽度的距离
     random(0 + size, width - size),
