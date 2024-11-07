@@ -100,12 +100,17 @@ function initializeGrid() {
         }
     }
 
-    // 放置8个神庙守卫
+    // 预定义一条路径，确保角色能成功找到宝藏
+    const path = [
+        [0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [3, 2], [4, 2], [5, 2], [5, 3], [5, 4], [5, 5]
+    ];
+
+    // 放置8个神庙守卫，确保不在预定义路径上
     const guards = new Set();
     while (guards.size < 8) {
         const row = Math.floor(Math.random() * 6);
         const col = Math.floor(Math.random() * 6);
-        if ((row !== 0 || col !== 0) && (row !== 5 || col !== 5)) {
+        if (!path.some(position => position[0] === row && position[1] === col)) {
             guards.add(`${row},${col}`);
         }
     }
@@ -159,11 +164,20 @@ function movePlayer(event) {
         newCell.innerHTML = '<img src="4.jpg" alt="Player">';
 
         if (newCell.classList.contains('treasure')) {
-            updateResult("恭喜!你找到了传说中的宝藏!");
             document.removeEventListener('keydown', movePlayer);
             document.getElementById('grid').classList.add('hidden'); // 立即隐藏6x6方格
+            showTreasureImage();
         }
     }
+}
+
+function showTreasureImage() {
+    const treasureImage = document.getElementById('treasureImage');
+    treasureImage.classList.add('show');
+    setTimeout(() => {
+        const popup = document.getElementById('popup');
+        popup.classList.add('show');
+    }, 1000); // 延迟1秒显示弹窗，确保动画完成
 }
 
 document.getElementById('decodeButton').addEventListener('click', decodeScript);
