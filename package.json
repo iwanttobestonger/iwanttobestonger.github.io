@@ -1,17 +1,24 @@
 {
   "name": "parcel-demo",
   "version": "1.0.0",
-  "description": "一个使用 Parcel 构建的示例项目",
-  "main": "index.js",
+  "description": "一个使用 Parcel 构建的贪吃蛇游戏",
+  "source": "src/index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html --public-url ./ --no-cache --dist-dir ./dist",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.13.2"
-  }
+    "parcel": "^2.13.2",
+    "rimraf": "^5.0.10"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
