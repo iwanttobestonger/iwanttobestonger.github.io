@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html --public-url /仓库名/ --no-cache --dist-dir ./docs",
+    "build": "parcel build src/index.html --public-url / --no-cache --dist-dir ./docs",
     "build:netlify": "parcel build src/index.html --public-url ./ --no-cache --dist-dir ./dist",
     "clean": "rimraf docs && rimraf dist"
   },
