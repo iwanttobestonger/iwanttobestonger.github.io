@@ -11,14 +11,19 @@
       />
     </div>
     <div class="btn-group">
-      <button type="button" class="btn" @click="onCancel">
+      <el-button 
+        @click="onCancel"
+        :size="'small'">
         取消
         <span class="visually-hidden">编辑 {{label}}</span>
-      </button>
-      <button type="submit" class="btn btn__primary">
+      </el-button>
+      <el-button 
+        type="primary" 
+        native-type="submit"
+        :size="'small'">
         保存
         <span class="visually-hidden">编辑 {{label}}</span>
-      </button>
+      </el-button>
     </div>
   </form>
 </template>

@@ -1,24 +1,32 @@
 <template>
-  <form @submit.prevent="onSubmit">
-    <h2 class="label-wrapper">
-      <label for="new-todo-input" class="label__lg">
-        需要做什么?
-      </label>
-    </h2>
-    <input
-      type="text"
-      id="new-todo-input"
-      name="new-todo"
-      autocomplete="off"
-      v-model.lazy.trim="label"
-      class="input__lg"
-    />
-    <button type="submit" class="btn btn__primary btn__lg">添加</button>
-  </form>
+  <el-form @submit.prevent="onSubmit" class="todo-form">
+    <el-form-item>
+      <el-input
+        v-model.trim="label"
+        placeholder="需要做什么?"
+        :prefix-icon="Edit"
+        clearable
+      >
+        <template #append>
+          <el-button type="primary" native-type="submit">
+            添加
+          </el-button>
+        </template>
+      </el-input>
+    </el-form-item>
+  </el-form>
 </template>
 
 <script>
+import { Edit } from '@element-plus/icons-vue'
+
 export default {
+  data() {
+    return {
+      label: "",
+      Edit
+    };
+  },
   methods: {
     onSubmit() {
       if(this.label === "") {
@@ -27,11 +35,13 @@ export default {
       this.$emit('todo-added', this.label);
       this.label = "";
     }
-  },
-  data() {
-    return {
-      label: ""
-    };
   }
 };
-</script> 
+</script>
+
+<style scoped>
+.todo-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style> 
