@@ -100,23 +100,35 @@ export default {
 .layout-container {
   min-height: 100vh;
   background-color: #f5f7fa;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .el-header {
   background-color: #fff;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   z-index: 100;
+  padding: 0;
+  height: 60px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .el-main {
-  padding-top: 100px;
+  margin-top: 60px;
+  padding: 20px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1;
 }
 
 .main-card {
@@ -134,6 +146,11 @@ h1 {
   font-size: 24px;
   color: #303133;
   margin: 0;
+  padding: 0;
+  position: static;
+  width: auto;
+  transform: none;
+  line-height: normal;
 }
 
 .el-divider {
