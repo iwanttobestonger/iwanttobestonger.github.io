@@ -1,0 +1,169 @@
+.game {
+  display: flex;
+  flex-direction: row;
+  margin: 40px auto;
+  max-width: 900px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.game-board {
+  margin-right: 20px;
+}
+
+.board {
+  background-color: #DEB887;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.board-row {
+  display: flex;
+  height: 40px;
+}
+
+.square {
+  background: transparent;
+  border-right: 1px solid #666;
+  border-bottom: 1px solid #666;
+  border-top: none;
+  border-left: none;
+  float: left;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 40px;
+  position: relative;
+  transform: translate(-50%, -50%);
+}
+
+.board-row:first-child .square {
+  border-top: 1px solid #666;
+}
+
+.board-row .square:first-child {
+  border-left: 1px solid #666;
+}
+
+.square:before {
+  content: attr(data-value);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  z-index: 1;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+/* 黑棋样式 */
+.square[data-value='●']:before {
+  background-color: #000;
+  color: #000;
+}
+
+/* 白棋样式 */
+.square[data-value='○']:before {
+  background-color: #fff;
+  color: #fff;
+  border: 1px solid #000;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+.square:focus {
+  outline: none;
+}
+
+.status {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+
+.game-info ol {
+  padding-left: 30px;
+}
+
+.game-info button {
+  margin: 5px 0;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.game-info details {
+  background: #f7f7f7;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.game-info summary {
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.game-info summary:hover {
+  color: #666;
+}
+
+.game-info ol {
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.game-info ol::-webkit-scrollbar {
+  width: 8px;
+}
+
+.game-info ol::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.game-info ol::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.game-info ol::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.reset-button {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+  background-color: #45a049;
+}
+
+.reset-button:active {
+  transform: scale(0.98);
+} 
