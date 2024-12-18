@@ -29,7 +29,7 @@ class Player {
 
 class AudioController {
     constructor() {
-        this.bgMusic = new Audio('audio/background.mp3');
+        this.bgMusic = new Audio('audio/flower_dance.mp3');
         this.bgMusic.loop = true;
         this.effectSound = new Audio('audio/effect.mp3');
         
@@ -137,7 +137,7 @@ async function submitRiddle() {
         try {
             const clueResult = await Treasure.decodeAncientScript('some clue');
             updateResult(clueResult);
-            document.body.style.backgroundImage = "url('2.jpg')";
+            document.body.style.backgroundImage = "url('images/2.jpg')";
             document.getElementById('riddleSection').classList.add('hidden');
             document.getElementById('searchButton').classList.remove('hidden');
         } catch (error) {
@@ -177,7 +177,7 @@ async function openTreasureBox() {
     try {
         const treasureResult = await Treasure.openTreasureBox();
         updateResult(treasureResult);
-        document.body.style.backgroundImage = "url('3.jpg')";
+        document.body.style.backgroundImage = "url('images/3.jpg')";
         document.getElementById('openBoxButton').classList.add('hidden');
     } catch (error) {
         updateResult(error);
@@ -309,7 +309,7 @@ window.addEventListener('load', () => {
             try {
                 const clueResult = await Treasure.decodeAncientScript('some clue');
                 updateResult(clueResult);
-                document.body.style.backgroundImage = "url('2.jpg')";
+                document.body.style.backgroundImage = "url('images/2.jpg')";
                 document.getElementById('riddleSection').classList.add('hidden');
                 document.getElementById('searchButton').classList.remove('hidden');
             } catch (error) {
