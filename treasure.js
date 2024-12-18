@@ -158,7 +158,7 @@ async function searchTemple() {
         `;
         
         audioController.playEffect();
-        document.body.style.backgroundImage = "url('3.jpg')";
+        document.body.style.backgroundImage = "url('images/3.jpg')";
         document.getElementById('searchButton').classList.add('hidden');
         document.getElementById('grid').classList.remove('hidden');
         
@@ -231,11 +231,11 @@ function initializeGrid() {
     // 放置玩家和宝箱
     const playerCell = document.querySelector(`.cell[data-row='0'][data-col='0']`);
     playerCell.classList.add('player');
-    playerCell.innerHTML = '<img src="4.jpg" alt="Player">';
+    playerCell.innerHTML = '<img src="images/4.jpg" alt="Player">';
 
     const treasureCell = document.querySelector(`.cell[data-row='5'][data-col='5']`);
     treasureCell.classList.add('treasure');
-    treasureCell.innerHTML = '<img src="5.jpg" alt="Treasure">';
+    treasureCell.innerHTML = '<img src="images/5.jpg" alt="Treasure">';
 
     // 监听键盘事件控制玩家移动
     document.addEventListener('keydown', movePlayer);
@@ -269,7 +269,7 @@ function movePlayer(event) {
         playerCell.classList.remove('player');
         playerCell.innerHTML = '';
         newCell.classList.add('player');
-        newCell.innerHTML = '<img src="4.jpg" alt="Player">';
+        newCell.innerHTML = '<img src="images/4.jpg" alt="Player">';
 
         if (newCell.classList.contains('treasure')) {
             document.removeEventListener('keydown', movePlayer);
@@ -285,7 +285,7 @@ function showTreasureImage() {
     setTimeout(() => {
         const popup = document.getElementById('popup');
         popup.classList.add('show');
-    }, 1000); // 延迟1秒显示��窗，确保动画完成
+    }, 1000); // 延迟1秒显示窗，确保动画完成
 }
 
 window.addEventListener('load', () => {
