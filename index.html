@@ -88,9 +88,55 @@
         #popup.show {
             display: block;
         }
+        .game-info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        
+        .scroll-text {
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            text-align: left;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+        
+        /* 修改音乐控制按钮样式 */
+        #audioControl {
+            position: fixed;
+            bottom: 20px;  /* 改为bottom */
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;  /* 添加鼠标指针样式 */
+            transition: background 0.3s;  /* 添加过渡效果 */
+        }
+        
+        #audioControl:hover {
+            background: rgba(255, 255, 255, 0.3);  /* 添加悬停效果 */
+        }
+        
+        #audioControl button {
+            border: none;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
     </style>
 </head>
 <body>
+    <div id="audioControl">
+        <button onclick="audioController.bgMusic.paused ? audioController.playBackground() : audioController.stopBackground()">
+            🎵 背景音乐
+        </button>
+    </div>
     <h1>宝藏猎人</h1>
     <button id="decodeButton">解码古代文字</button>
     <div id="riddleSection" class="hidden">

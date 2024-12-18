@@ -1,4 +1,70 @@
+class Player {
+    constructor(id, nickname) {
+        this.id = id;
+        this.nickname = nickname;
+        this.gameHistory = [];
+    }
+
+    addHistory(record) {
+        this.gameHistory.push({
+            ...record,
+            timestamp: new Date().toISOString()
+        });
+        this.saveToStorage();
+    }
+
+    saveToStorage() {
+        localStorage.setItem('player', JSON.stringify(this));
+    }
+
+    static loadFromStorage() {
+        const data = localStorage.getItem('player');
+        if (!data) return null;
+        const playerData = JSON.parse(data);
+        const player = new Player(playerData.id, playerData.nickname);
+        player.gameHistory = playerData.gameHistory;
+        return player;
+    }
+}
+
+class AudioController {
+    constructor() {
+        this.bgMusic = new Audio('audio/background.mp3');
+        this.bgMusic.loop = true;
+        this.effectSound = new Audio('audio/effect.mp3');
+        
+        this.bgMusic.volume = 0.3;
+        this.effectSound.volume = 0.5;
+    }
+
+    playBackground() {
+        this.bgMusic.play();
+    }
+
+    stopBackground() {
+        this.bgMusic.pause();
+        this.bgMusic.currentTime = 0;
+    }
+
+    playEffect() {
+        this.effectSound.play();
+    }
+}
+
 class Treasure {
+    static async loadGameData() {
+        try {
+            const [templeData, libraryData] = await Promise.all([
+                fetch('data/temple.txt').then(res => res.text()),
+                fetch('data/library.txt').then(res => res.text())
+            ]);
+            return { templeData, libraryData };
+        } catch (error) {
+            console.error('加载游戏数据失败:', error);
+            throw error;
+        }
+    }
+
     static decodeAncientScript(clue) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -27,9 +93,42 @@ class Treasure {
     }
 }
 
+let currentPlayer = null;
+const audioController = new AudioController();
+
 async function decodeScript() {
-    document.getElementById('decodeButton').classList.add('hidden');
-    document.getElementById('riddleSection').classList.remove('hidden');
+    if (!currentPlayer) {
+        const nickname = prompt('请输入你的昵称:');
+        if (!nickname) {
+            updateResult('请输入昵称以开始游戏');
+            return;
+        }
+        
+        currentPlayer = new Player(Date.now().toString(), nickname);
+        currentPlayer.saveToStorage();
+    }
+
+    try {
+        const { libraryData } = await Treasure.loadGameData();
+        document.getElementById('result').innerHTML = `
+            <div class="game-info">
+                <h3>欢迎, ${currentPlayer.nickname}!</h3>
+                <div class="scroll-text">${libraryData}</div>
+            </div>
+        `;
+        
+        audioController.playBackground();
+        document.getElementById('decodeButton').classList.add('hidden');
+        document.getElementById('riddleSection').classList.remove('hidden');
+        
+        currentPlayer.addHistory({
+            action: '开始解谜',
+            result: '成功'
+        });
+    } catch (error) {
+        console.error('加载游戏数据失败:', error);
+        updateResult('加载游戏数据失败,请刷新重试');
+    }
 }
 
 async function submitRiddle() {
@@ -51,14 +150,23 @@ async function submitRiddle() {
 
 async function searchTemple() {
     try {
-        const templeResult = await Treasure.searchTemple('some location');
-        updateResult(templeResult);
+        const { templeData } = await Treasure.loadGameData();
+        document.getElementById('result').innerHTML = `
+            <div class="game-info">
+                <div class="scroll-text">${templeData}</div>
+            </div>
+        `;
+        
+        audioController.playEffect();
         document.body.style.backgroundImage = "url('3.jpg')";
         document.getElementById('searchButton').classList.add('hidden');
         document.getElementById('grid').classList.remove('hidden');
-        updateResult("糟糕，附近有神庙守卫！请避开守卫并拿到宝箱。");
-
-        // 初始化6x6方格
+        
+        currentPlayer.addHistory({
+            action: '进入神庙',
+            result: '成功'
+        });
+        
         initializeGrid();
     } catch (error) {
         updateResult(error);
@@ -177,21 +285,38 @@ function showTreasureImage() {
     setTimeout(() => {
         const popup = document.getElementById('popup');
         popup.classList.add('show');
-    }, 1000); // 延迟1秒显示弹窗，确保动画完成
+    }, 1000); // 延迟1秒显示��窗，确保动画完成
 }
 
-document.getElementById('decodeButton').addEventListener('click', decodeScript);
-document.getElementById('submitRiddle').addEventListener('click', submitRiddle);
-document.getElementById('helpButton').addEventListener('click', async () => {
-    try {
-        const clueResult = await Treasure.decodeAncientScript('some clue');
-        updateResult(clueResult);
-        document.body.style.backgroundImage = "url('2.jpg')";
-        document.getElementById('riddleSection').classList.add('hidden');
-        document.getElementById('searchButton').classList.remove('hidden');
-    } catch (error) {
-        updateResult(error);
+window.addEventListener('load', () => {
+    // 加载玩家数据
+    currentPlayer = Player.loadFromStorage();
+    if (currentPlayer) {
+        updateResult(`欢迎回来, ${currentPlayer.nickname}!`);
     }
+
+    // 确保所有按钮都存在并正确绑定事件
+    const decodeButton = document.getElementById('decodeButton');
+    const submitRiddle = document.getElementById('submitRiddle');
+    const helpButton = document.getElementById('helpButton');
+    const searchButton = document.getElementById('searchButton');
+    const openBoxButton = document.getElementById('openBoxButton');
+
+    if (decodeButton) decodeButton.addEventListener('click', decodeScript);
+    if (submitRiddle) submitRiddle.addEventListener('click', submitRiddle);
+    if (helpButton) {
+        helpButton.addEventListener('click', async () => {
+            try {
+                const clueResult = await Treasure.decodeAncientScript('some clue');
+                updateResult(clueResult);
+                document.body.style.backgroundImage = "url('2.jpg')";
+                document.getElementById('riddleSection').classList.add('hidden');
+                document.getElementById('searchButton').classList.remove('hidden');
+            } catch (error) {
+                updateResult(error);
+            }
+        });
+    }
+    if (searchButton) searchButton.addEventListener('click', searchTemple);
+    if (openBoxButton) openBoxButton.addEventListener('click', openTreasureBox);
 });
-document.getElementById('searchButton').addEventListener('click', searchTemple);
-document.getElementById('openBoxButton').addEventListener('click', openTreasureBox);
