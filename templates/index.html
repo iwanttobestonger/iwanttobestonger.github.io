@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Phaser Workshop - lesson 16: Randomizing gameplay</title>
+    <style>
+        * { padding: 0; margin: 0; }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #game-container { 
+            width: 100%;
+            height: 80vh; /* 使用视口高度的80% */
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #scores {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .score-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+    </style>
+    <script src="{{ url_for('static', filename='js/phaser.2.4.2.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</head>
+<body>
+    <div id="game-container"></div>
+    
+    <div id="scores">
+        <h2>High Scores</h2>
+        <div id="scores-list"></div>
+    </div>
+
+    <script>
+        // 加载高分榜
+        function loadScores() {
+            fetch('/api/scores')
+                .then(res => res.json())
+                .then(scores => {
+                    const scoresList = document.getElementById('scores-list');
+                    scoresList.innerHTML = scores.map(score => {
+                        // 正确处理日期
+                        const date = new Date(score.date.$date || score.date);
+                        const formattedDate = date.toLocaleString('zh-CN', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                        });
+                        
+                        return `
+                            <div class="score-item">
+                                玩家: ${score.player_name} | 得分: ${score.score} | 时间: ${formattedDate}
+                            </div>
+                        `;
+                    }).join('');
+                })
+                .catch(error => {
+                    console.error('加载分数时出错:', error);
+                    document.getElementById('scores-list').innerHTML = 
+                        '<div class="error">加载分数失败</div>';
+                });
+        }
+
+        // 初始加载
+        loadScores();
+        
+        // 每60秒自动刷新一次分数榜
+        setInterval(loadScores, 60000);
+        
+        // 监听窗口大小变化
+        window.addEventListener('resize', function() {
+            if (game && game.scale) {
+                game.scale.refresh();
+            }
+        });
+    </script>
+</body>
+</html> 
